@@ -37,10 +37,10 @@ const Historico = () => {
         renderItem={({ item }) => (
           <View>
             <TouchableOpacity
-              style={[styles.accessItem, item.status === 'Negado' ? styles.denied : styles.allowed]}
+              style={[styles.accessItem, item?.entryTipe == "entrada" ? styles.allowed : styles.denied]}
               onPress={() => setExpandedItemId(expandedItemId === item.id ? null : item.id)}
             >
-              <Text style={styles.accessText}>{item.status}{item?.entryTipe}</Text>
+              {user.role == "admin" ? <Text style={styles.accessText}>{item.status}{item?.entryTipe == "entrada" ? "ENTRADA" : "SAIDA" + " - " + item.usermail}</Text> : <Text style={styles.accessText}>{item.status}{item?.entryTipe == "entrada" ? "ENTRADA" : "SAIDA"}</Text>}
             </TouchableOpacity>
             {expandedItemId === item.id && item.status === 'Negado' && (
               <View style={styles.descriptionContainer}>
