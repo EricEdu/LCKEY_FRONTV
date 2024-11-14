@@ -1,37 +1,67 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs, useRouter } from "expo-router";
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { useUser } from '../../assets/src/userContext';
+import { useEffect, useState } from 'react';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+export default () => {
+    const { user } = useUser(); // Obtém o usuário do contexto
+    const router = useRouter();
+    const [loading, setLoading] = useState(true); // Estado de carregamento
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+    useEffect(() => {
+        // Apenas altera o estado de loading após a verificação do usuário estar concluída
+        if (user !== undefined) {
+            setLoading(false);
+            if (!user) {
+                router.push('/login');
+            }
+        }
+    }, [user, router]);
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
-}
+    if (loading) {
+        return null; // Ou um componente de carregamento
+    }
+
+    return (
+        <Tabs
+            screenOptions={{
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    backgroundColor: '#121212',
+                    borderTopWidth: 0,
+                    height: 60,
+                },
+                tabBarActiveTintColor: '#0000FF',
+                tabBarInactiveTintColor: '#A9A9A9',
+            }}
+        >
+            <Tabs.Screen
+                name="home"
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="home-outline" color={color} size={size || 24} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialIcons name="person-outline" color={color} size={size || 24} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="historico"
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialIcons name="book" color={color} size={size || 24} />
+                    ),
+                }}
+            />
+        </Tabs>
+    );
+};

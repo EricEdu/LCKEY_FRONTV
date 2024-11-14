@@ -13,6 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
+      "hidden": true,
+      "barStyle": "light-content",
       "supportsTablet": true
     },
     "android": {
