@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Vibration } from 'react-native';  // Importando Vibration
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { useRouter } from 'expo-router';
 import { useUser } from '@/assets/src/userContext';
@@ -39,6 +39,7 @@ const Home = () => {
                 if (user) {
                     await userRepository.updateEntryCode(newNumber, user.uid);
                     setRandomNumber(newNumber); // Atualiza o número gerado no estado
+                    Vibration.vibrate(500); // Vibra por 500 milissegundos
                 }
             } catch (error) {
                 console.error('Erro ao atualizar entry code:', error);
